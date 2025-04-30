@@ -21,8 +21,11 @@
         (l.search ? '?' + l.search.slice(1) : '') +
         l.hash;
 
-      // Force a full page reload to ensure the app initializes properly
-      window.location.href = newUrl;
+      // Store the current URL in sessionStorage before redirecting
+      sessionStorage.setItem('redirectUrl', newUrl);
+      
+      // Redirect to the base URL first
+      window.location.href = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + redirectPath;
     </script>
   </head>
   <body>
