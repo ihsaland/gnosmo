@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/gnosmo/static/css/main.ab6a93fb.css",
+    "main.js": "/gnosmo/static/js/main.44df039e.js",
+    "static/js/453.f5ec8687.chunk.js": "/gnosmo/static/js/453.f5ec8687.chunk.js",
+    "static/media/hoodie7.png": "/gnosmo/static/media/hoodie7.d65f6b196f73ec3d44bb.png",
+    "static/media/t_shirt4.png": "/gnosmo/static/media/t_shirt4.3707641448fa6c775ada.png",
+    "static/media/hoodie9.png": "/gnosmo/static/media/hoodie9.9a362ad616dce721ffbf.png",
+    "static/media/gnosmo_scene3.png": "/gnosmo/static/media/gnosmo_scene3.443cf16b876c2a1216d3.png",
+    "static/media/t_shirt2.png": "/gnosmo/static/media/t_shirt2.b8720a655db9f2190695.png",
+    "static/media/Gnosmo_Mark.png": "/gnosmo/static/media/Gnosmo_Mark.deb90e21b7e8178af3c3.png",
+    "index.html": "/gnosmo/index.html",
+    "main.ab6a93fb.css.map": "/gnosmo/static/css/main.ab6a93fb.css.map",
+    "main.44df039e.js.map": "/gnosmo/static/js/main.44df039e.js.map",
+    "453.f5ec8687.chunk.js.map": "/gnosmo/static/js/453.f5ec8687.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ab6a93fb.css",
+    "static/js/main.44df039e.js"
+  ]
+}
