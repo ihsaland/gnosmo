@@ -1,8 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import { toast } from 'react-hot-toast';
 
 interface Product {
   id: string;
@@ -17,19 +15,6 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    addToCart({
-      ...product,
-      id: product.id.toString(),
-      color: 'Default',
-      size: 'M'
-    });
-    toast.success(`${product.name} added to cart`);
-  };
-
   return (
     <Link to={`/product/${product.id}`}>
       <motion.div
@@ -45,15 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
         <div className="p-4">
           <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-          <div className="flex justify-between items-center">
-            <span className="text-primary font-bold">${product.price}</span>
-            <button
-              onClick={handleAddToCart}
-              className="bg-primary text-white px-3 py-1 rounded-md hover:bg-primary/90 transition-colors"
-            >
-              Add to Cart
-            </button>
-          </div>
+          <span className="text-primary font-bold">${product.price}</span>
         </div>
       </motion.div>
     </Link>

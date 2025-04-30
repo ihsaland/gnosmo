@@ -2,7 +2,7 @@
   "name": "modern-shop",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ihsaland.github.io/gnosmo",
+  "homepage": "https://www.gnosmo.com",
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@paypal/react-paypal-js": "^8.8.3",

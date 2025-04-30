@@ -20,7 +20,7 @@ const App: React.FC = () => {
       <CartProvider>
         <div className="min-h-screen bg-secondary flex flex-col">
           <Navigation />
-          <main className="flex-grow pt-20">
+          <main className="flex-grow pt-10">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/shop" element={<Shop />} />
