@@ -20,10 +20,21 @@ interface CartContextType {
   clearCart: () => void;
 }
 
+const CART_STORAGE_KEY = 'gnosmo_cart';
+
 export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  // Initialize cart from localStorage
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     setCart(prevCart => {
@@ -61,6 +72,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = () => {
     setCart([]);
+    localStorage.removeItem(CART_STORAGE_KEY);
   };
 
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
