@@ -9,7 +9,8 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-bold mb-2">GNOSMO</h3>
             <p className="text-gray-400 text-sm">
-            Grow Your Roots. Wear Your Future.  GNOSMO Clothing: Where style meets unstoppable growth.
+            Grow Your Roots. Wear Your Future.  GNOSMO Clothing: Where style meets unstoppable growth. 
+            Engineered with precision, built for comfort. Shop premium oversized hoodies and lightweight summer tees.
             </p>
           </div>
           <div>

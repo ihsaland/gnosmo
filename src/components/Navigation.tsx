@@ -49,6 +49,16 @@ const Navigation: React.FC = () => {
                 Shop
               </Link>
               <Link
+                to="/about"
+                className={`text-sm font-medium transition-colors duration-300 ${
+                  location.pathname === '/about'
+                    ? 'text-accent font-semibold'
+                    : 'text-black hover:text-accent'
+                }`}
+              >
+                About
+              </Link>
+              <Link
                 to="/contact"
                 className={`text-sm font-medium transition-colors duration-300 ${
                   location.pathname === '/contact'
@@ -70,6 +80,17 @@ const Navigation: React.FC = () => {
                 )}
               </Link>
             </div>
+            <Link
+              to="/cart"
+              className="md:hidden relative text-black hover:text-accent transition-colors duration-300"
+            >
+              <ShoppingCartIcon className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
       </nav>

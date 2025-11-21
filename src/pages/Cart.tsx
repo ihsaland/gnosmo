@@ -73,38 +73,38 @@ const Cart: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-lg shadow-sm p-6 flex items-center"
+              className="bg-white rounded-lg shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-24 h-24 object-cover rounded-md"
+                className="w-full sm:w-24 h-24 object-cover rounded-md"
               />
-              <div className="ml-6 flex-grow">
+              <div className="flex-grow w-full sm:w-auto">
                 <h3 className="text-lg font-medium text-gray-900">{item.name}</h3>
                 <p className="text-sm text-gray-500">Color: {item.color}</p>
                 <p className="text-sm text-gray-500">Size: {item.size}</p>
                 <p className="text-primary font-semibold">${item.price.toFixed(2)}</p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-between w-full sm:w-auto sm:space-x-4">
                 <div className="flex items-center border rounded-md">
                   <button
                     onClick={() => handleQuantityChange(item, item.quantity - 1)}
-                    className="px-3 py-1 text-gray-600 hover:text-primary"
+                    className="px-4 py-2 text-gray-600 hover:text-primary"
                   >
                     -
                   </button>
-                  <span className="px-3 py-1">{item.quantity}</span>
+                  <span className="px-4 py-2">{item.quantity}</span>
                   <button
                     onClick={() => handleQuantityChange(item, item.quantity + 1)}
-                    className="px-3 py-1 text-gray-600 hover:text-primary"
+                    className="px-4 py-2 text-gray-600 hover:text-primary"
                   >
                     +
                   </button>
                 </div>
                 <button
                   onClick={() => removeFromCart(item.id, item.color, item.size)}
-                  className="text-gray-400 hover:text-red-500 transition-colors"
+                  className="text-gray-400 hover:text-red-500 transition-colors p-2"
                 >
                   <TrashIcon className="h-5 w-5" />
                 </button>
@@ -112,7 +112,7 @@ const Cart: React.FC = () => {
             </motion.div>
           ))}
 
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-white rounded-lg shadow-sm p-6 sticky bottom-0 z-10">
             <div className="flex justify-between items-center mb-4">
               <span className="text-gray-600">Subtotal</span>
               <span className="text-lg font-semibold">${calculateSubtotal().toFixed(2)}</span>
@@ -127,11 +127,19 @@ const Cart: React.FC = () => {
             ) : (
               <div className="w-full">
                 <PayPalScriptProvider options={{ 
-                  clientId: "test", // Replace with your PayPal client ID
-                  currency: "USD"
+                  clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID || "test",
+                  currency: "USD",
+                  "enable-funding": "paylater",
+                  "disable-funding": "credit,card",
+                  "data-sdk-integration-source": "integrationbuilder_sc"
                 }}>
                   <PayPalButtons
-                    style={{ layout: "vertical" }}
+                    style={{ 
+                      layout: "vertical",
+                      color: "blue",
+                      shape: "rect",
+                      label: "checkout"
+                    }}
                     createOrder={(data, actions) => {
                       return actions.order.create({
                         intent: "CAPTURE",

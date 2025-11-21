@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { useCart } from '../context/CartContext';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -10,6 +11,13 @@ interface MobileMenuProps {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { cart } = useCart();
+
+  const handleCartClick = () => {
+    onClose();
+    navigate('/cart');
+  };
 
   return (
     <AnimatePresence>
@@ -41,6 +49,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                   <li>
                     <Link
                       to="/"
+                      onClick={onClose}
                       className={`block py-2 ${
                         location.pathname === '/'
                           ? 'text-accent'
@@ -53,6 +62,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                   <li>
                     <Link
                       to="/shop"
+                      onClick={onClose}
                       className={`block py-2 ${
                         location.pathname === '/shop'
                           ? 'text-accent'
@@ -62,12 +72,28 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                       Shop
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      to="/about"
+                      onClick={onClose}
+                      className={`block py-2 ${
+                        location.pathname === '/about'
+                          ? 'text-accent'
+                          : 'text-gray-600 hover:text-accent'
+                      }`}
+                    >
+                      About
+                    </Link>
+                  </li>
                 </ul>
               </nav>
               <div className="p-4 border-t">
-                <button className="flex items-center space-x-2 text-gray-600 hover:text-accent">
+                <button 
+                  onClick={handleCartClick}
+                  className="flex items-center space-x-2 text-gray-600 hover:text-accent w-full"
+                >
                   <ShoppingCartIcon className="h-6 w-6" />
-                  <span>Cart (0)</span>
+                  <span>Cart ({cart.length})</span>
                 </button>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 import SocialShare from '../components/SocialShare';
@@ -26,9 +27,11 @@ const PRODUCTS = [
     id: '1',
     name: 'Premium Hoodie with Logo',
     price: 79.99,
-    description: 'A timeless hoodie crafted from premium cotton blend. Features a comfortable fit, kangaroo pocket, and adjustable drawstring hood. Perfect for casual outings or lounging at home.',
+    category: 'Hoodies',
+    description: 'Experience our premium oversized hoodie, engineered for comfort and style. Crafted from premium cotton blend, this oversized hoodie features a comfortable relaxed fit, kangaroo pocket, and adjustable drawstring hood. Perfect for casual outings or lounging at home. Built with precision, designed for growth.',
     details: [
       'Premium cotton blend fabric',
+      'Oversized fit - engineered for comfort',
       'Kangaroo pocket',
       'Adjustable drawstring hood',
       'Ribbed cuffs and hem',
@@ -45,11 +48,14 @@ const PRODUCTS = [
     id: '2',
     name: 'Essential T-Shirt',
     price: 39.99,
-    description: 'A versatile t-shirt made from 100% organic cotton. Features a classic fit, reinforced seams, and a comfortable crew neck. The perfect foundation for any outfit.',
+    category: 'T-Shirts',
+    description: 'Our lightweight summer tees are engineered for warm weather comfort. Made from 100% organic cotton, this lightweight summer tee features a classic fit, reinforced seams, and a comfortable crew neck. Built with precision for the perfect foundation of any outfit. These lightweight summer tees are breathable and ideal for everyday wear.',
     details: [
-      '100% organic cotton',
+      '100% organic cotton - lightweight summer tees',
+      'Engineered for comfort and breathability',
       'Classic fit',
-      'Reinforced seams',
+      'Lightweight and breathable',
+      'Reinforced seams - built to last',
       'Crew neck design',
       'Available in multiple sizes'
     ],
@@ -64,9 +70,11 @@ const PRODUCTS = [
     id: '3',
     name: 'Premium Hoodie',
     price: 79.99,
-    description: 'A premium hoodie with enhanced comfort and durability. Perfect for those who value quality and style.',
+    category: 'Hoodies',
+    description: 'Discover our premium oversized hoodie, designed with software engineering principles in mind. Featuring an oversized fit with enhanced comfort and durability, this is the perfect hoodie for those who value quality and style. Built with premium materials and attention to detail, this hoodie offers ultimate comfort.',
     details: [
       'Premium materials',
+      'Oversized fit - engineered for comfort',
       'Enhanced comfort',
       'Durability',
       'Available in multiple sizes'
@@ -82,11 +90,13 @@ const PRODUCTS = [
     id: '4',
     name: 'Essential T-Shirt with Logo',
     price: 39.99,
-    description: 'A timeless t-shirt design that never goes out of style. Made from soft, breathable fabric.',
+    category: 'T-Shirts',
+    description: 'Our lightweight summer tees combine timeless design with modern engineering. Made from soft, breathable fabric, these lightweight summer tees are perfect for warm weather. Designed with intention, this timeless t-shirt never goes out of style. These lightweight summer tees are ideal for casual wear, built for comfort.',
     details: [
-      'Soft',
-      'Breathable',
-      'Timeless design',
+      'Soft and breathable - lightweight summer tees',
+      'Engineered lightweight fabric',
+      'Timeless design - built to last',
+      'Perfect for summer',
       'Available in multiple sizes'
     ],
     colors: [
@@ -139,13 +149,42 @@ const ProductDetail: React.FC = () => {
     toast.success('Added to cart!');
   };
 
+  const isHoodie = product.category === 'Hoodies' || product.name.toLowerCase().includes('hoodie');
+  const isTShirt = product.category === 'T-Shirts' || product.name.toLowerCase().includes('t-shirt');
+  
+  const seoTitle = isHoodie 
+    ? `${product.name} - Premium Oversized Hoodie | GNOSMO`
+    : isTShirt
+    ? `${product.name} - Lightweight Summer Tees | GNOSMO`
+    : `${product.name} | GNOSMO`;
+  
+  const seoDescription = isHoodie
+    ? `Shop ${product.name}, our premium oversized hoodie. ${product.description} Available in multiple colors and sizes.`
+    : isTShirt
+    ? `Shop ${product.name}, our premium lightweight summer tees. ${product.description} Available in multiple colors and sizes.`
+    : `${product.description} Available in multiple colors and sizes.`;
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="container mx-auto px-4 py-8"
-    >
+    <>
+      <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDescription} />
+        <meta name="keywords" content={
+          isHoodie 
+            ? `best oversized hoodie, ${product.name}, oversized hoodie, premium hoodies, comfortable hoodies, engineered clothing`
+            : isTShirt
+            ? `lightweight summer tees, ${product.name}, summer t-shirts, lightweight t-shirts, comfortable tees, engineered clothing`
+            : `${product.name}, premium clothing, casual wear, engineered clothing`
+        } />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+      </Helmet>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="container mx-auto px-4 py-8"
+      >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <motion.div
           initial={{ x: -20, opacity: 0 }}
@@ -303,6 +342,7 @@ const ProductDetail: React.FC = () => {
         </div>
       )}
     </motion.div>
+    </>
   );
 };
 
