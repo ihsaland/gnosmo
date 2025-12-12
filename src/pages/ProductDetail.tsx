@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import SocialShare from '../components/SocialShare';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { trackProductView, trackAddToCart } from '../utils/analytics';
+import { getProductSchema, getBreadcrumbSchema } from '../utils/structuredData';
 
 // Import all product images
 import hoodie7_black from '../assets/images/hoodie7_black.png';
@@ -174,6 +175,26 @@ const ProductDetail: React.FC = () => {
     ? `Shop ${product.name}, our premium lightweight summer tees. ${product.description} Available in multiple colors and sizes.`
     : `${product.description} Available in multiple colors and sizes.`;
 
+  const productImage = selectedColor ? product.colors.find(c => c.name === selectedColor)?.image : product.colors[0].image;
+  const canonicalUrl = `https://gnosmo.com/#/product/${product.id}`;
+  const ogImage = productImage || product.colors[0].image;
+
+  // Structured data
+  const productSchema = getProductSchema({
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    image: ogImage,
+    category: product.category,
+  });
+
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://gnosmo.com/' },
+    { name: 'Shop', url: 'https://gnosmo.com/#/shop' },
+    { name: product.name, url: canonicalUrl },
+  ]);
+
   return (
     <>
       <Helmet>
@@ -186,8 +207,25 @@ const ProductDetail: React.FC = () => {
             ? `lightweight summer tees, ${product.name}, summer t-shirts, lightweight t-shirts, comfortable tees, engineered clothing`
             : `${product.name}, premium clothing, casual wear, engineered clothing`
         } />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDescription} />
+        <meta property="og:type" content="product" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:alt" content={product.name} />
+        <meta property="product:price:amount" content={product.price.toString()} />
+        <meta property="product:price:currency" content="USD" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seoTitle} />
+        <meta name="twitter:description" content={seoDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        <script type="application/ld+json">
+          {JSON.stringify(productSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
       </Helmet>
       <motion.div
         initial={{ opacity: 0 }}
@@ -203,9 +241,10 @@ const ProductDetail: React.FC = () => {
           className="relative aspect-square"
         >
           <img
-            src={selectedColor ? product.colors.find(c => c.name === selectedColor)?.image : product.colors[0].image}
-            alt={product.name}
+            src={productImage}
+            alt={`${product.name} - ${selectedColor || product.colors[0].name} - Premium ${product.category} by GNOSMO`}
             className="w-full h-full object-cover rounded-lg"
+            loading="eager"
           />
         </motion.div>
         <motion.div

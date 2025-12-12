@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import { getFAQSchema, getBreadcrumbSchema } from '../utils/structuredData';
 
 interface FAQItem {
   question: string;
@@ -49,7 +51,34 @@ const FAQ: React.FC = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const canonicalUrl = 'https://gnosmo.com/#/faq';
+  const faqSchema = getFAQSchema(faqs);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://gnosmo.com/' },
+    { name: 'FAQ', url: canonicalUrl },
+  ]);
+
   return (
+    <>
+      <Helmet>
+        <title>FAQ - Frequently Asked Questions | GNOSMO</title>
+        <meta name="description" content="Find answers to common questions about GNOSMO products, shipping, returns, payment methods, and more. Get help with your order and learn about our premium hoodies and t-shirts." />
+        <meta name="keywords" content="GNOSMO FAQ, shipping questions, return policy, payment methods, product questions, customer support" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="FAQ - Frequently Asked Questions | GNOSMO" />
+        <meta property="og:description" content="Find answers to common questions about GNOSMO products, shipping, returns, and more." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="FAQ - Frequently Asked Questions | GNOSMO" />
+        <meta name="twitter:description" content="Find answers to common questions about GNOSMO products." />
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+      </Helmet>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -101,6 +130,7 @@ const FAQ: React.FC = () => {
         </p>
       </div>
     </motion.div>
+    </>
   );
 };
 

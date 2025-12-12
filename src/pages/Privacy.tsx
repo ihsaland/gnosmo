@@ -1,9 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { ShieldCheckIcon, DocumentTextIcon, UserIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 
 const Privacy: React.FC = () => {
+  const canonicalUrl = 'https://gnosmo.com/#/privacy';
+
   return (
+    <>
+      <Helmet>
+        <title>Privacy Policy | GNOSMO</title>
+        <meta name="description" content="Read GNOSMO's Privacy Policy. Learn how we collect, use, and protect your personal information. Your privacy is important to us." />
+        <meta name="keywords" content="GNOSMO privacy policy, data protection, privacy, personal information" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="Privacy Policy | GNOSMO" />
+        <meta property="og:description" content="Read GNOSMO's Privacy Policy. Learn how we collect, use, and protect your personal information." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+      </Helmet>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -154,6 +168,7 @@ const Privacy: React.FC = () => {
         </motion.div>
       </div>
     </motion.div>
+    </>
   );
 };
 

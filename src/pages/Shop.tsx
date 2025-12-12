@@ -6,6 +6,7 @@ import hoodie7 from '../assets/images/hoodie7.png';
 import hoodie9 from '../assets/images/hoodie9.png';
 import t_shirt2 from '../assets/images/t_shirt2.png';
 import t_shirt4 from '../assets/images/t_shirt4.png';
+import { getItemListSchema, getBreadcrumbSchema } from '../utils/structuredData';
 
 const PRODUCTS = [
   {
@@ -39,14 +40,45 @@ const PRODUCTS = [
 ];
 
 const Shop: React.FC = () => {
+  const canonicalUrl = 'https://gnosmo.com/#/shop';
+  const ogImage = 'https://gnosmo.com/static/media/hoodie7.d65f6b196f73ec3d44bb.png';
+
+  const itemListSchema = getItemListSchema(PRODUCTS.map(p => ({
+    id: p.id,
+    name: p.name,
+    description: `Premium ${p.category.toLowerCase()} engineered for comfort and style.`,
+    price: p.price,
+    image: p.image,
+    category: p.category,
+  })));
+
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://gnosmo.com/' },
+    { name: 'Shop', url: canonicalUrl },
+  ]);
+
   return (
     <>
       <Helmet>
         <title>Shop - Best Oversized Hoodies & Lightweight Summer Tees | GNOSMO</title>
         <meta name="description" content="Browse our collection of premium oversized hoodies and lightweight summer tees. Engineered for comfort and style. Available in multiple colors and sizes. Free shipping on orders over $50." />
         <meta name="keywords" content="best oversized hoodie, lightweight summer tees, shop hoodies, buy t-shirts, premium hoodies, comfortable t-shirts, oversized hoodie, summer t-shirts, engineered clothing" />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content="Shop - Best Oversized Hoodies & Lightweight Summer Tees | GNOSMO" />
         <meta property="og:description" content="Discover our collection of premium hoodies and lightweight summer tees. Engineered for growth, built for comfort." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Shop - Best Oversized Hoodies & Lightweight Summer Tees | GNOSMO" />
+        <meta name="twitter:description" content="Discover our collection of premium hoodies and lightweight summer tees." />
+        <meta name="twitter:image" content={ogImage} />
+        <script type="application/ld+json">
+          {JSON.stringify(itemListSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
       </Helmet>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}

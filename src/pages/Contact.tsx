@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-hot-toast';
 import { trackFormSubmission, trackUserInteraction } from '../utils/analytics';
@@ -117,7 +118,23 @@ const Contact: React.FC = () => {
     }
   };
 
+  const canonicalUrl = 'https://gnosmo.com/#/contact';
+
   return (
+    <>
+      <Helmet>
+        <title>Contact Us - Get in Touch | GNOSMO</title>
+        <meta name="description" content="Contact GNOSMO for questions about our products, orders, shipping, or returns. We're here to help. Email us at support@gnosmo.com or use our contact form." />
+        <meta name="keywords" content="contact GNOSMO, customer support, help, questions, email support" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="Contact Us - Get in Touch | GNOSMO" />
+        <meta property="og:description" content="Contact GNOSMO for questions about our products, orders, or customer support." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Contact Us - Get in Touch | GNOSMO" />
+        <meta name="twitter:description" content="Contact GNOSMO for questions about our products or customer support." />
+      </Helmet>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -213,6 +230,7 @@ const Contact: React.FC = () => {
         <p className="text-gray-600">support@gnosmo.com</p>
       </div>
     </motion.div>
+    </>
   );
 };
 

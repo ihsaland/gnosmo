@@ -24,8 +24,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="relative h-96">
           <img
             src={product.image}
-            alt={product.name}
+            alt={`${product.name} - Premium ${product.category} by GNOSMO - $${product.price}`}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         </div>
         <div className="p-4">

@@ -1,9 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { DocumentTextIcon, ScaleIcon, ExclamationTriangleIcon, UserIcon } from '@heroicons/react/24/outline';
 
 const Terms: React.FC = () => {
+  const canonicalUrl = 'https://gnosmo.com/#/terms';
+
   return (
+    <>
+      <Helmet>
+        <title>Terms and Conditions | GNOSMO</title>
+        <meta name="description" content="Read GNOSMO's Terms and Conditions. Learn about orders, payments, returns, and your rights when shopping with us." />
+        <meta name="keywords" content="GNOSMO terms, terms and conditions, legal, user agreement" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="Terms and Conditions | GNOSMO" />
+        <meta property="og:description" content="Read GNOSMO's Terms and Conditions. Learn about orders, payments, and returns." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+      </Helmet>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -162,6 +176,7 @@ const Terms: React.FC = () => {
         </motion.div>
       </div>
     </motion.div>
+    </>
   );
 };
 

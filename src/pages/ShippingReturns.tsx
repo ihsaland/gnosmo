@@ -1,9 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TruckIcon, ArrowPathIcon, GlobeAltIcon, ClockIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
+import { Helmet } from 'react-helmet-async';
+import { TruckIcon, ArrowPathIcon, GlobeAltIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 
 const ShippingReturns: React.FC = () => {
+  const canonicalUrl = 'https://gnosmo.com/#/shipping-returns';
+
   return (
+    <>
+      <Helmet>
+        <title>Shipping & Returns Policy | GNOSMO</title>
+        <meta name="description" content="Learn about GNOSMO shipping and returns policy. Standard shipping 3-5 business days, 30-day return policy, international shipping available. Free returns for US customers." />
+        <meta name="keywords" content="GNOSMO shipping, return policy, shipping information, international shipping, refund policy" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="Shipping & Returns Policy | GNOSMO" />
+        <meta property="og:description" content="Learn about GNOSMO shipping and returns policy. Standard shipping 3-5 business days, 30-day return policy." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+      </Helmet>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -158,6 +172,7 @@ const ShippingReturns: React.FC = () => {
         </p>
       </div>
     </motion.div>
+    </>
   );
 };
 

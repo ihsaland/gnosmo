@@ -89,8 +89,9 @@ const Cart: React.FC = () => {
             >
               <img
                 src={item.image}
-                alt={item.name}
+                alt={`${item.name} - ${item.color} - Size ${item.size} - GNOSMO`}
                 className="w-full sm:w-24 h-24 object-cover rounded-md"
+                loading="lazy"
               />
               <div className="flex-grow w-full sm:w-auto">
                 <h3 className="text-lg font-medium text-gray-900">{item.name}</h3>
@@ -180,7 +181,7 @@ const Cart: React.FC = () => {
                       });
                     }}
                     onApprove={async (data, actions) => {
-                      const order = await actions.order?.capture();
+                      await actions.order?.capture();
                       handlePaymentSuccess();
                     }}
                     onError={(err) => {

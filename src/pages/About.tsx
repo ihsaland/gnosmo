@@ -3,12 +3,22 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
 const About: React.FC = () => {
+  const canonicalUrl = 'https://gnosmo.com/#/about';
+
   return (
     <>
       <Helmet>
         <title>About Us - GNOSMO | Engineered for Growth</title>
-        <meta name="description" content="Learn about GNOSMO - where software engineering principles meet premium clothing. Built with precision, designed for growth." />
-        <meta name="keywords" content="about GNOSMO, software engineering clothing, premium hoodies, engineered fashion, growth mindset clothing" />
+        <meta name="description" content="Learn about GNOSMO - where software engineering principles meet premium clothing. Built with precision, designed for growth. Discover our story, philosophy, and commitment to quality." />
+        <meta name="keywords" content="about GNOSMO, software engineering clothing, premium hoodies, engineered fashion, growth mindset clothing, company story" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="About Us - GNOSMO | Engineered for Growth" />
+        <meta property="og:description" content="Learn about GNOSMO - where software engineering principles meet premium clothing. Built with precision, designed for growth." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="About Us - GNOSMO | Engineered for Growth" />
+        <meta name="twitter:description" content="Learn about GNOSMO - where software engineering principles meet premium clothing." />
       </Helmet>
       <motion.div
         initial={{ opacity: 0 }}

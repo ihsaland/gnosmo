@@ -1,3 +1,7 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /cart
+
+# Sitemap
+Sitemap: https://gnosmo.com/sitemap.xml
