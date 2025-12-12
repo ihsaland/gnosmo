@@ -33,18 +33,23 @@ export const trackPageView = (path: string) => {
   if (!isProduction) {
     console.log('Page view tracked:', path);
   }
-  ReactGA.send({ hitType: "pageview", page: path });
+  // GA4 pageview format - use gtag for custom page paths
+  ReactGA.gtag("event", "page_view", {
+    page_path: path,
+    page_title: document.title,
+  });
 };
 
 // Track events
-export const trackEvent = (category: string, action: string, label?: string) => {
+export const trackEvent = (category: string, action: string, label?: string, value?: number) => {
   if (!isProduction) {
-    console.log('Event tracked:', { category, action, label });
+    console.log('Event tracked:', { category, action, label, value });
   }
   ReactGA.event({
-    category,
     action,
+    category,
     label,
+    value,
   });
 };
 
@@ -69,11 +74,32 @@ export const trackProductView = (productId: string, productName: string) => {
 };
 
 // Track add to cart
-export const trackAddToCart = (productId: string, productName: string, quantity: number) => {
-  trackEvent('Cart', 'Add', `${productName} (${productId}) - Quantity: ${quantity}`);
+export const trackAddToCart = (productId: string, productName: string, quantity: number, price: number) => {
+  // Use gtag for GA4 ecommerce events with items
+  ReactGA.gtag("event", "add_to_cart", {
+    currency: "USD",
+    value: price * quantity,
+    items: [{
+      item_id: productId,
+      item_name: productName,
+      quantity: quantity,
+      price: price,
+    }],
+  });
+  if (!isProduction) {
+    console.log('Add to cart tracked:', { productId, productName, quantity, price });
+  }
 };
 
 // Track checkout
-export const trackCheckout = (cartValue: number, itemCount: number) => {
-  trackEvent('Checkout', 'Start', `Value: $${cartValue}, Items: ${itemCount}`);
+export const trackCheckout = (cartValue: number, itemCount: number, items?: Array<{ id: string; name: string; quantity: number; price: number }>) => {
+  // Use gtag for GA4 ecommerce events with items
+  ReactGA.gtag("event", "begin_checkout", {
+    currency: "USD",
+    value: cartValue,
+    items: items || [],
+  });
+  if (!isProduction) {
+    console.log('Checkout tracked:', { cartValue, itemCount, items });
+  }
 }; 

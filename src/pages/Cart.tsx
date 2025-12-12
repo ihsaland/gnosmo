@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { motion } from 'framer-motion';
 import { CartItem } from '../context/CartContext';
+import { trackCheckout } from '../utils/analytics';
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, updateQuantity, totalItems, totalPrice, clearCart } = useCart();
@@ -23,6 +24,17 @@ const Cart: React.FC = () => {
 
   const handleCheckout = () => {
     setIsProcessing(true);
+    // Track checkout event
+    trackCheckout(
+      totalPrice,
+      totalItems,
+      cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      }))
+    );
   };
 
   const handlePaymentSuccess = () => {

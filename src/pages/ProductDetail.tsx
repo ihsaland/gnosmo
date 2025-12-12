@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -6,6 +6,7 @@ import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 import SocialShare from '../components/SocialShare';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { trackProductView, trackAddToCart } from '../utils/analytics';
 
 // Import all product images
 import hoodie7_black from '../assets/images/hoodie7_black.png';
@@ -118,6 +119,13 @@ const ProductDetail: React.FC = () => {
 
   const product = PRODUCTS.find(p => p.id === id);
 
+  // Track product view
+  useEffect(() => {
+    if (product) {
+      trackProductView(product.id, product.name);
+    }
+  }, [product]);
+
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
@@ -146,6 +154,8 @@ const ProductDetail: React.FC = () => {
       color: selectedColor,
       size: selectedSize
     });
+    // Track add to cart event
+    trackAddToCart(product.id, product.name, 1, product.price);
     toast.success('Added to cart!');
   };
 
