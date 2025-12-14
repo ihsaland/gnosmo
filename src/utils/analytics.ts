@@ -14,13 +14,15 @@ export const initGA = (measurementId: string) => {
     // Check if gtag is already loaded (from direct script tag)
     if (typeof window !== 'undefined' && (window as any).gtag) {
       console.log('Google Analytics already initialized via script tag');
-      // Track initial page load
-      const initialPath = window.location.hash || '#/';
-      (window as any).gtag('config', measurementId, {
-        page_path: initialPath,
-        page_title: document.title,
-        page_location: window.location.href,
-      });
+      // Don't re-initialize, just ensure tracking is working
+      if (isProduction) {
+        const initialPath = window.location.hash || window.location.pathname || '/';
+        (window as any).gtag('event', 'page_view', {
+          page_path: initialPath,
+          page_title: document.title,
+          page_location: window.location.href,
+        });
+      }
       return;
     }
 
@@ -58,6 +60,7 @@ export const initGA = (measurementId: string) => {
 export const trackPageView = (path: string) => {
   // For HashRouter, include the hash in the path
   const fullPath = path.startsWith('/') ? `#${path}` : path;
+  const fullUrl = window.location.origin + fullPath;
   
   if (!isProduction) {
     console.log('Page view tracked:', fullPath);
@@ -65,13 +68,17 @@ export const trackPageView = (path: string) => {
   
   // Use gtag directly if available (from script tag), otherwise use react-ga4
   if (typeof window !== 'undefined' && (window as any).gtag) {
+    // Update config with new page path
+    (window as any).gtag('config', 'G-QDB6WMDP5S', {
+      page_path: fullPath,
+      page_title: document.title,
+      page_location: fullUrl,
+    });
+    // Send page_view event
     (window as any).gtag('event', 'page_view', {
       page_path: fullPath,
       page_title: document.title,
-      page_location: window.location.origin + fullPath,
-    });
-    (window as any).gtag('config', 'G-QDB6WMDP5S', {
-      page_path: fullPath,
+      page_location: fullUrl,
     });
   } else {
     // Fallback to react-ga4
@@ -82,7 +89,7 @@ export const trackPageView = (path: string) => {
     ReactGA.gtag("event", "page_view", {
       page_path: fullPath,
       page_title: document.title,
-      page_location: window.location.origin + fullPath,
+      page_location: fullUrl,
     });
   }
 };

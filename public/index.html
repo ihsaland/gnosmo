@@ -42,7 +42,11 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-QDB6WMDP5S', {
-        page_path: window.location.hash || '#/',
+        send_page_view: true
+      });
+      // Send initial pageview
+      gtag('event', 'page_view', {
+        page_path: window.location.hash || window.location.pathname || '/',
         page_title: document.title,
         page_location: window.location.href
       });
