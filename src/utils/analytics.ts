@@ -5,23 +5,49 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 // Initialize Google Analytics
 export const initGA = (measurementId: string) => {
-  if (!measurementId) {
-    console.warn('Google Analytics Measurement ID is not set');
+  if (!measurementId || measurementId === 'G-XXXXXXXXXX') {
+    console.warn('Google Analytics Measurement ID is not set or invalid');
     return;
   }
 
   try {
+    // Check if gtag is already loaded (from direct script tag)
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      console.log('Google Analytics already initialized via script tag');
+      // Track initial page load
+      const initialPath = window.location.hash || '#/';
+      (window as any).gtag('config', measurementId, {
+        page_path: initialPath,
+        page_title: document.title,
+        page_location: window.location.href,
+      });
+      return;
+    }
+
+    // Initialize react-ga4 if gtag is not already available
     ReactGA.initialize(measurementId, {
-      testMode: !isProduction, // Enable test mode in development
+      testMode: !isProduction, // Enable test mode in development only
       gaOptions: {
         siteSpeedSampleRate: 100, // Sample 100% of users for site speed
       },
     });
 
+    // Send initial pageview
     if (isProduction) {
-      console.log('Google Analytics initialized in production mode');
+      console.log('Google Analytics initialized in production mode via react-ga4');
+      // Track initial page load
+      const initialPath = window.location.hash || '#/';
+      ReactGA.send({ 
+        hitType: "pageview", 
+        page: initialPath 
+      });
+      ReactGA.gtag("event", "page_view", {
+        page_path: initialPath,
+        page_title: document.title,
+        page_location: window.location.href,
+      });
     } else {
-      console.log('Google Analytics initialized in development mode');
+      console.log('Google Analytics initialized in development mode (test mode)');
     }
   } catch (error) {
     console.error('Failed to initialize Google Analytics:', error);
@@ -30,14 +56,35 @@ export const initGA = (measurementId: string) => {
 
 // Track page views
 export const trackPageView = (path: string) => {
+  // For HashRouter, include the hash in the path
+  const fullPath = path.startsWith('/') ? `#${path}` : path;
+  
   if (!isProduction) {
-    console.log('Page view tracked:', path);
+    console.log('Page view tracked:', fullPath);
   }
-  // GA4 pageview format - use gtag for custom page paths
-  ReactGA.gtag("event", "page_view", {
-    page_path: path,
-    page_title: document.title,
-  });
+  
+  // Use gtag directly if available (from script tag), otherwise use react-ga4
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'page_view', {
+      page_path: fullPath,
+      page_title: document.title,
+      page_location: window.location.origin + fullPath,
+    });
+    (window as any).gtag('config', 'G-QDB6WMDP5S', {
+      page_path: fullPath,
+    });
+  } else {
+    // Fallback to react-ga4
+    ReactGA.send({ 
+      hitType: "pageview", 
+      page: fullPath 
+    });
+    ReactGA.gtag("event", "page_view", {
+      page_path: fullPath,
+      page_title: document.title,
+      page_location: window.location.origin + fullPath,
+    });
+  }
 };
 
 // Track events
