@@ -1,4 +1,5 @@
 import React from 'react';
+import { ShareIcon } from '@heroicons/react/24/outline';
 
 interface SocialShareProps {
   productName: string;

@@ -27,10 +27,12 @@ const PageTracker: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Track page view when route changes
-    // Include hash for HashRouter compatibility
-    const path = location.pathname + location.search;
-    trackPageView(path);
+    // Add a small delay to ensure the page has loaded
+    const timer = setTimeout(() => {
+      trackPageView(location.pathname);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [location]);
 
   return null;
